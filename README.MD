@@ -1,0 +1,1 @@
+Phoca Font is Joomla! CMS extension. Component which sets external fonts on website.
