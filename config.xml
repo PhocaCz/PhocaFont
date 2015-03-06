@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+   <fields addfieldpath="/administrator/components/com_phocafont/models/fields">
+      
+      
+	  <fieldset name="main" label="COM_PHOCAFONT_CONFIG_HEAD_MAIN">
+      
+      <field name="phocahead1" type="phocahead" default="COM_PHOCAFONT_DEFAULT_RULE_FONT_DEFAULT" label="" description="" />
+
+      <field name="tag_id_class" default="body" size="30" type="text" label="COM_PHOCAFONT_FIELD_TAG_ID_CLASS_LABEL" description="COM_PHOCAFONT_FIELD_TAG_ID_CLASS_DESC" />
+      <field name="menu_selection" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_MENU_SELECTION_LABEL" description="COM_PHOCAFONT_FIELD_MENU_SELECTION_DESC" />
+      <field name="font_size" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_FONT_SIZE_LABEL" description="COM_PHOCAFONT_FIELD_FONT_SIZE_DESC" />
+	  <field name="additional_css" default="" rows="3" cols="25" type="textarea" label="COM_PHOCAFONT_FIELD_ADDITIONAL_CSS_LABEL" description="COM_PHOCAFONT_FIELD_ADDITIONAL_CSS_DESC" />
+
+      <field name="phocahead2" type="phocahead" default="COM_PHOCAFONT_SECOND_RULE_FONT_2" label="" description="" />
+
+      <field name="fonts_02" type="phocaselectfont" default="1" label="COM_PHOCAFONT_FIELD_FONT_SECOND_LABEL" fontid="02" />
+      <field name="tag_id_class_02" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_TAG_ID_CLASS_SECOND_LABEL" description="COM_PHOCAFONT_FIELD_TAG_ID_CLASS_SECOND_DESC" />
+      <field name="menu_selection_02" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_MENU_SELECTION_SECOND_LABEL" description="COM_PHOCAFONT_FIELD_MENU_SELECTION_SECOND_DESC" />
+      <field name="font_size_02" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_FONT_SIZE_SECOND_LABEL" description="COM_PHOCAFONT_FIELD_FONT_SIZE_SECOND_DESC" />
+	  <field name="additional_css_02" default="" rows="3" cols="25" type="textarea" label="COM_PHOCAFONT_FIELD_ADDITIONAL_CSS_SECOND_LABEL" description="COM_PHOCAFONT_FIELD_ADDITIONAL_CSS_SECOND_DESC" />
+
+      <field name="phocahead3" type="phocahead" default="COM_PHOCAFONT_THIRD_RULE_FONT_3" label="" description="" />
+
+      <field name="fonts_03" type="phocaselectfont" default="1" label="COM_PHOCAFONT_FIELD_FONT_THIRD_LABEL" fontid="03" />
+      <field name="tag_id_class_03" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_TAG_ID_CLASS_THIRD_LABEL" description="COM_PHOCAFONT_FIELD_TAG_ID_CLASS_THIRD_DESC" />
+      <field name="menu_selection_03" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_MENU_SELECTION_THIRD_LABEL" description="COM_PHOCAFONT_FIELD_MENU_SELECTION_THIRD_DESC" />
+      <field name="font_size_03" default="" size="30" type="text" label="COM_PHOCAFONT_FIELD_FONT_SIZE_THIRD_LABEL" description="COM_PHOCAFONT_FIELD_FONT_SIZE_THIRD_DESC" />
+	  <field name="additional_css_03" default="" rows="3" cols="25" type="textarea" label="COM_PHOCAFONT_FIELD_ADDITIONAL_CSS_THIRD_LABEL" description="COM_PHOCAFONT_FIELD_ADDITIONAL_CSS_THIRD_DESC" />
+
+	  </fieldset>
+	
+	
+	<fieldset name="permissions" description="JCONFIG_PERMISSIONS_DESC" label="JCONFIG_PERMISSIONS_LABEL">
+
+		<field name="rules" type="rules" component="com_phocafont" filter="rules" label="JCONFIG_PERMISSIONS_LABEL" section="component" description="JCONFIG_PERMISSIONS_DESC"/>
+	</fieldset>
+	  
+   </fields>
+</config>

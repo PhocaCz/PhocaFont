@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension method="upgrade" type="component" version="3">
+	<name>com_phocafont</name>
+	<author>Jan Pavelka (www.phoca.cz)</author>
+	<creationDate>05/04/2014</creationDate>
+	<authorEmail></authorEmail>
+	<authorUrl>www.phoca.cz</authorUrl>
+	<copyright>Jan Pavelka</copyright>
+	<license>GNU/GPL</license>
+	<version>3.0.1</version>
+	<description>Phoca Font</description>
+	<scriptfile>install/script.php</scriptfile>
+
+	<install>
+		<sql>
+			<file driver="mysql" charset="utf8">install/sql/mysql/install.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall>
+		<sql>
+			<file driver="mysql" charset="utf8">install/sql/mysql/uninstall.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<update>
+		<schemas/>
+	</update>
+
+	<files folder="site">
+		<filename>index.html</filename>
+		<filename>metadata.xml</filename>
+		<folder>fonts</folder>
+	</files>
+
+	<media destination="com_phocafont" folder="media">
+		<filename>index.html</filename>
+		<folder>css</folder>
+		<folder>images</folder>
+	</media>
+
+	<languages>
+		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocafont.ini</language>
+		<language tag="en-GB" client="site">language/en-GB/en-GB.com_phocafont.sys.ini</language>
+	</languages>
+
+	<administration>
+		<menu img="media/com_phocafont/images/administrator/images/icon-16-pfont-menu.png" link="option=com_phocafont">COM_PHOCAFONT</menu>
+		<submenu>
+			<menu img="media/com_phocafont/images/administrator/images/icon-16-pfont-cp.png" alt="COM_PHOCAFONT_CONTROLPANEL" view="phocafontcp" link="option=com_phocafont">COM_PHOCAFONT_CONTROLPANEL</menu>
+			<menu img="media/com_phocafont/images/administrator/images/icon-16-pfont-font.png" alt="COM_PHOCAFONT_FONTS" view="phocafontfonts" link="option=com_phocafont&amp;view=phocafontfonts">COM_PHOCAFONT_FONTS</menu>
+			<menu img="media/com_phocafont/images/administrator/images/icon-16-pfont-info.png" alt="COM_PHOCAFONT_INFO" view="phocafontinfo" link="option=com_phocafont&amp;view=phocafontinfo">COM_PHOCAFONT_INFO</menu>
+		</submenu>
+
+		<files folder="admin">
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+			<filename>phocafont.php</filename>
+			<filename>phocafont.xml</filename>
+			<folder>controllers</folder>
+			<folder>help</folder>
+			<folder>helpers</folder>
+			<folder>install</folder>
+			<folder>models</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+
+		<languages>
+			<language tag="en-GB">language/en-GB/en-GB.com_phocafont.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_phocafont.sys.ini</language>
+		</languages>
+
+	</administration>
+</extension>
