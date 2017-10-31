@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <updates>
 	<update>
-		<name><![CDATA[ Phoca Font ]]></name>
+		<name>Phoca Font</name>
 		<description><![CDATA[ Phoca Font is Joomla! CMS component. It adds support for using downloadable and external fonts in your Joomla! site. ]]></description>
 		<element>com_phocafont</element>
 		<type>component</type>
@@ -12,12 +13,10 @@
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer>
-		<![CDATA[ Phoca.cz ]]>
-		</maintainer>
+		<maintainer>Phoca.cz</maintainer>
 		<maintainerurl>http://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="3.7"/>
+		<targetplatform name="joomla" version="3.*"/>
 		<client>1</client>
 	</update>
 </updates>
