@@ -196,3 +196,16 @@ div.icon-48-phocafonts {
 	background: #0081c2 url('../../images/administrator/icon-16-pfont-info.png') no-repeat 2px;
 }
 */
+
+.ph-btn-toolbar-2 {
+	clear: right;
+	padding-top: 10px;
+}
+.ph-select-status {
+	padding-left: 5px;
+}
+
+.ph-cpanel-logo img {
+	transform: scale(0.6);
+	transform-origin: 0 50%;
+}

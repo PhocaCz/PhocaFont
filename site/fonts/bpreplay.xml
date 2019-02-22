@@ -1,0 +1,42 @@
+<install type="phocafontfonts" version="1.5" client="both" method="upgrade">
+    <name>BPreplay</name>
+	<tag>BPreplay</tag>
+    <creationDate>27/05/2009</creationDate>
+    <author>Jan Pavelka</author>
+    <authorEmail></authorEmail>
+    <authorUrl>http://www.phoca.cz</authorUrl>
+    <copyright>(C) 2008 Jan Pavelka</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	
+	<authorFont>George Triantafyllakos, Magentasee, see OFL.txt in this package</authorFont>
+    <copyrightFont>George Triantafyllakos, Magentasee, see OFL.txt file in this package</copyrightFont>
+    <licenseFont>OFL, see OFL.txt file in this package</licenseFont>
+	
+    <description>BPreplay Font for Phoca Font component</description>
+
+    <files>
+          <filename>BPreplay-OFL.txt</filename>
+          <filename>BPreplay-OFL-FAQ.txt</filename>        
+		  <filename>BPreplay.otf</filename>
+		  <filename>BPreplayBold.otf</filename>
+		  <filename>BPreplayBoldItalics.otf</filename>
+		  <filename>BPreplayItalics.otf</filename>
+		  <filename>BPreplay.eot</filename>
+		  <filename>BPreplayBold.eot</filename>
+		  <filename>BPreplayBoldItalics.eot</filename>
+		  <filename>BPreplayItalics.eot</filename>
+		  <filename>index.html</filename>
+    </files>
+	<types>
+		<regular>BPreplay.otf</regular>
+		<bold>BPreplayBold.otf</bold>
+		<italic>BPreplayItalics.otf</italic>
+		<bolditalic>BPreplayBoldItalics.otf</bolditalic>
+		<condensed></condensed>
+		<condensedbold></condensedbold>
+		<condenseditalic></condenseditalic>
+		<condensedbolditalic></condensedbolditalic>
+		<alternative>serif, arial, helvetica</alternative>
+		<format>opentype</format>
+	</types>
+</install> 

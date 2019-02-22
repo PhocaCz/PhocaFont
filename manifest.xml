@@ -1,22 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <updates>
 	<update>
-		<name>Phoca Font</name>
-		<description><![CDATA[ Phoca Font is Joomla! CMS component. It adds support for using downloadable and external fonts in your Joomla! site. ]]></description>
+		<name><![CDATA[ Phoca Font ]]></name>
+		<description><![CDATA[ Phoca Font is Joomla! CMS component. It adds support for using downloadable fonts in your Joomla! site. You can upload and select your own .ttf or .otf font file. Font included in this font file will be rendered on your site (with help of @font-face rule). External fonts listed e.g. in Google Fonts directory can be used too. With help of this component you can include fonts from Google Fonts directory. Variant or Subset attributes are included. ]]></description>
 		<element>com_phocafont</element>
 		<type>component</type>
-		<version>3.0.3</version>
-		<infourl title="Phoca Font 3.0.3">http://www.phoca.cz/version/index.php?phocafont=3.0.3</infourl>
+		<version>3.0.4</version>
+		<infourl title="Phoca Font 3.0.4">http://www.phoca.cz/version/index.php?phocafont=3.0.4</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaFont/releases/download/3.0.3/com_phocafont_v3.0.3.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaFont/releases/download/3.0.4/com_phocafont_v3.0.4.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
 		</tags>
-		<maintainer>Phoca.cz</maintainer>
-		<maintainerurl>http://www.phoca.cz/</maintainerurl>
+		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
+		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="3.*"/>
+		<targetplatform name="joomla" version="3.9"/>
 		<client>1</client>
 	</update>
 </updates>

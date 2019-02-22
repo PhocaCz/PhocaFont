@@ -1,0 +1,49 @@
+{
+	"author": "Jan Pavelka (www.phoca.cz)",
+	"authorUrl": "https://www.phoca.cz",
+	"copyright": "Jan Pavelka",
+	"license": "GNU/GPL",
+	"projectName": "PhocaFont",
+	"extensionName": "Phoca Font",
+	"projectInitials" : "PF",				  
+	"description": "Phoca Font is Joomla! CMS component. It adds support for using downloadable fonts in your Joomla! site. You can upload and select your own .ttf or .otf font file. Font included in this font file will be rendered on your site (with help of @font-face rule). External fonts listed e.g. in Google Fonts directory can be used too. With help of this component you can include fonts from Google Fonts directory. Variant or Subset attributes are included.",
+	"projectUrl": "https://www.phoca.cz/phocafont",
+	"projectDocumentationUrl": "https://www.phoca.cz/documentation/category/55-phoca-font-component",
+	"projectMainComponent": "Phoca Font",
+	"projectMainComponentInfoUrl": "https://www.phoca.cz/project/phocafont-joomla-font",
+	"projectDemo" : {
+		"Joomla! And Phoca Font Demo": "https://www.phoca.cz/demo/phoca-font-demo",
+		"Joomla! 3 And Phoca Font Demo": "https://www.phoca.cz/joomla3demo/phoca-font-demo"
+	},
+	"projectColor": "#000000",												
+	"menu": {
+		"main":{
+			"0" : {
+				"image": "icon-16-pfont-menu.png",
+				"view": "",
+				"link": "option=com_phocafont",
+				"title": "COM_PHOCAFONT"
+			}
+		},
+		"submenu": {
+			"0" : {
+				"image": "icon-16-pfont-cp.png",
+				"view": "phocafontcp",
+				"link": "option=com_phocafont",
+				"title": "COM_PHOCAFONT_CONTROLPANEL"
+			},
+			"1" : {
+				"image": "icon-16-pfont-font.png",
+				"view": "phocafontfonts",
+				"link": "option=com_phocafont&amp;view=phocafontfonts",
+				"title": "COM_PHOCAFONT_FONTS"
+			},
+			"2" : {
+				"image": "icon-16-pfont-info.png",
+				"view": "phocafontinfo",
+				"link": "option=com_phocafont&amp;view=phocafontinfo",
+				"title": "COM_PHOCAFONT_INFO"
+			}
+		}
+	}
+}
