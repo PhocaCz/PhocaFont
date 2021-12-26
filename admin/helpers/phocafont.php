@@ -9,16 +9,18 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Installer\Installer;
 class phocaFontHelper
 {
 	public static function getPhocaVersion($component) {
 		$folder = JPATH_ADMINISTRATOR . '/components/'.$component;
-		if (JFolder::exists($folder)) {
-			$xmlFilesInDir = JFolder::files($folder, '.xml$');
+		if (Folder::exists($folder)) {
+			$xmlFilesInDir = Folder::files($folder, '.xml$');
 		} else {
 			$folder = JPATH_SITE . '/components/'.$component;
-			if (JFolder::exists($folder)) {
-				$xmlFilesInDir = JFolder::files($folder, '.xml$');
+			if (Folder::exists($folder)) {
+				$xmlFilesInDir = Folder::files($folder, '.xml$');
 			} else {
 				$xmlFilesInDir = null;
 			}
@@ -29,7 +31,7 @@ class phocaFontHelper
 		{
 			foreach ($xmlFilesInDir as $xmlfile)
 			{
-				if ($data = \JInstaller::parseXMLInstallFile($folder.'/'.$xmlfile)) {
+				if ($data = Installer::parseXMLInstallFile($folder.'/'.$xmlfile)) {
 					foreach($data as $key => $value) {
 						$xml_items[$key] = $value;
 					}

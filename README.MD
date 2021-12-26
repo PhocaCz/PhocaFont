@@ -2,13 +2,13 @@
 
 
 
-![Phoca Font](https://github.com/PhocaCz/PhocaFont/blob/master/phocafont.png)
+![Phoca Font](https://github.com/PhocaCz/PhocaFont/blob/master/phocafont.png?raw=true)
 
 # Phoca Font
 
 
 
-Phoca Font is Joomla! CMS component. It adds support for using downloadable fonts in your Joomla! site. You can upload and select your own .ttf or .otf font file. Font included in this font file will be rendered on your site (with help of @font-face rule). External fonts listed e.g. in Google Fonts directory can be used too. With help of this component you can include fonts from Google Fonts directory. Variant or Subset attributes are included.
+Phoca Font is Joomla! CMS component. It adds support for using internal and external fonts in your Joomla! site. Phoca Font supports variable fonts. Variable font is a specification that enables many different variations of a typeface to be incorporated into a single file. External fonts are fonts listed in Google Fonts directory and such fonts can be displayed on your website.
 
 
 
@@ -23,6 +23,8 @@ Phoca Font is Joomla! CMS component. It adds support for using downloadable font
 ## Documentation
 
 [Documentation](https://www.phoca.cz/documentation/category/55-phoca-font-component)
+
+
 
 
 
@@ -52,9 +54,13 @@ Phoca Font is Joomla! CMS component. It adds support for using downloadable font
 
 
 
-## Version
+## Version (Joomla! 3.x)
 
 3.0.4
+
+## Version (Joomla! 4.x)
+
+4.0.0Beta
 
 
 

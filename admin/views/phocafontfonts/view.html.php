@@ -7,11 +7,17 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\View\HtmlView;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Client\ClientHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Toolbar\Toolbar;
 jimport( 'joomla.application.component.view' );
 jimport('joomla.client.helper');
 jimport('joomla.filesystem.file');
 
-class PhocaFontCpViewPhocaFontFonts extends JViewLegacy
+class PhocaFontCpViewPhocaFontFonts extends HtmlView
 {
 
 	protected $items;
@@ -19,11 +25,14 @@ class PhocaFontCpViewPhocaFontFonts extends JViewLegacy
 	protected $state;
 	protected $t;
 	protected $ftp;
+	protected $r;
+	public $filterForm;
+	public $activeFilters;
 
 
 	function display($tpl = null) {
 
-		$this->t	= PhocaFontUtils::setVars('font');
+
 		// Check default value
 		$model 	= $this->getModel( 'phocafontfonts' );
 		$model->checkDefault();
@@ -31,14 +40,17 @@ class PhocaFontCpViewPhocaFontFonts extends JViewLegacy
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->state		= $this->get('State');
+		$this->filterForm   = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+
+		$this->r = new PhocaFontRenderAdminViews();
+		$this->t = PhocaFontUtils::setVars('font');
 
 		foreach ($this->items as &$item) {
 			$this->ordering[0][] = $item->id;
 		}
 
-		JHTML::stylesheet( $this->t['s'] );
-
-		$this->ftp	= JClientHelper::setCredentialsFromRequest('ftp');
+		$this->ftp	= ClientHelper::setCredentialsFromRequest('ftp');
 
 		$this->addToolbar();
 		parent::display($tpl);
@@ -51,43 +63,43 @@ class PhocaFontCpViewPhocaFontFonts extends JViewLegacy
 		$state	= $this->get('State');
 		$canDo	= PhocaFontHelperControlPanel::getActions($this->t);
 
-		JToolbarHelper::title( JText::_('COM_PHOCAFONT_FONTS'), 'pencil-2' );
+		ToolbarHelper::title( Text::_('COM_PHOCAFONT_FONTS'), 'pencil-2' );
 
 		if ($canDo->get('core.edit.state')) {
-			JToolbarHelper::makeDefault('phocafontfont.setdefault', 'COM_PHOCAFONT_MAKE_DEFAULT');
-			JToolbarHelper::divider();
+			ToolbarHelper::makeDefault('phocafontfont.setdefault', 'COM_PHOCAFONT_MAKE_DEFAULT');
+			ToolbarHelper::divider();
 		}
 
 		if ($canDo->get('core.create')) {
-			JToolbarHelper::addNew( 'phocafontfont.add','JToolbar_NEW');
+			ToolbarHelper::addNew( 'phocafontfont.add','JToolbar_NEW');
 		}
 		if ($canDo->get('core.edit')) {
-			JToolbarHelper::editList('phocafontfont.edit','JToolbar_EDIT');
+			ToolbarHelper::editList('phocafontfont.edit','JToolbar_EDIT');
 		}
 
 
 		if ($canDo->get('core.edit.state')) {
 
-			JToolbarHelper::divider();
-			JToolbarHelper::custom('phocafontfonts.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
-			JToolbarHelper::custom('phocafontfonts.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
+			ToolbarHelper::divider();
+			ToolbarHelper::custom('phocafontfonts.publish', 'publish.png', 'publish_f2.png','JToolbar_PUBLISH', true);
+			ToolbarHelper::custom('phocafontfonts.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JToolbar_UNPUBLISH', true);
 
 		}
 
 		if ($canDo->get('core.delete')) {
-			JToolbarHelper::deleteList( JText::_( 'COM_PHOCAFONT_WARNING_DELETE_ITEMS' ), 'phocafontfont.delete', 'COM_PHOCAFONT_DELETE');
+			ToolbarHelper::deleteList( Text::_( 'COM_PHOCAFONT_WARNING_DELETE_ITEMS' ), 'phocafontfont.delete', 'COM_PHOCAFONT_DELETE');
 		}
-		JToolbarHelper::divider();
-		JToolbarHelper::help( 'screen.phocafont', true );
+		ToolbarHelper::divider();
+		ToolbarHelper::help( 'screen.phocafont', true );
 	}
 
 	protected function getSortFields() {
 		return array(
-			'a.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
-			'a.title' 		=> JText::_($this->t['l'] . '_TITLE'),
-			'a.published' 	=> JText::_($this->t['l'] . '_PUBLISHED'),
-			'a.format' 		=> JText::_($this->t['l'] . '_FORMAT'),
-			'a.id' 			=> JText::_('JGRID_HEADING_ID')
+			'a.ordering'	=> Text::_('JGRID_HEADING_ORDERING'),
+			'a.title' 		=> Text::_($this->t['l'] . '_TITLE'),
+			'a.published' 	=> Text::_($this->t['l'] . '_PUBLISHED'),
+			'a.format' 		=> Text::_($this->t['l'] . '_FORMAT'),
+			'a.id' 			=> Text::_('JGRID_HEADING_ID')
 		);
 	}
 }

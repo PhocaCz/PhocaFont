@@ -9,11 +9,14 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined('_JEXEC') or die();
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 class PhocaFontRender
 {
 	function quickIconButton( $component, $link, $image, $text ) {
 		
-		$lang	= JFactory::getLanguage();
+		$lang	= Factory::getLanguage();
 		$button = '';
 		if ($lang->isRTL()) {
 			$button .= '<div class="icon-wrapper">';
@@ -22,7 +25,7 @@ class PhocaFontRender
 		}
 		$button .=	'<div class="icon">'
 				   .'<a href="'.$link.'">'
-				   .JHTML::_('image', 'administrator/components/'.$component.'/assets/images/'.$image, $text )
+				   .HTMLHelper::_('image', 'administrator/components/'.$component.'/assets/images/'.$image, $text )
 				   .'<span>'.$text.'</span></a>'
 				   .'</div>';
 		$button .= '</div>';
@@ -39,7 +42,7 @@ class PhocaFontRender
 		
 		$output = '<tr>'
 				 .'<td width="100" align="right" class="key">'
-				 .'<label for="'.$name.'">'.JText::_($title).':</label>'
+				 .'<label for="'.$name.'">'.Text::_($title).':</label>'
 				 .'</td><td>'
 				 .'<input class="text_area" type="text" name="'.$name.'" id="'.$name.'" size="'.$size.'" maxlength="'.$maxlength.'" value="'.$value.'" '.$attribute.' '.$styleOutput.' />'
 				.'</td></tr>';
@@ -55,7 +58,7 @@ class PhocaFontRender
 		
 		$output = '<tr>'
 				 .'<td width="100" align="right" class="key">'
-				 .'<label for="'.$name.'">'.JText::_($title).':</label>'
+				 .'<label for="'.$name.'">'.Text::_($title).':</label>'
 				 .'</td><td>'
 				 .'<textarea class="text_area" cols="'.$cols.'" rows="'.$rows.'" name="'.$name.'" id="'.$name.'" '.$styleOutput.'>'.$value.'</textarea>'
 				.'</td></tr>';
@@ -67,7 +70,7 @@ class PhocaFontRender
 		
 		$output = '<tr>'
 				 .'<td width="100" align="right" class="key">'
-				 .'<label for="'.$name.'">'.JText::_($title).':</label>'
+				 .'<label for="'.$name.'">'.Text::_($title).':</label>'
 				 .'</td><td>'
 				 . $special
 				 .'</td></tr>';
@@ -90,16 +93,16 @@ class PhocaFontRender
 	
 	function renderFTPaccess() {
 	
-		$ftpOutput = '<fieldset title="'.JText::_('COM_PHOCAFONT_FTP_LOGIN_LABEL'). '">'
-		.'<legend>'. JText::_('COM_PHOCAFONT_FTP_LOGIN_LABEL').'</legend>'
-		.JText::_('COM_PHOCAFONT_FTP_LOGIN_DESC')
+		$ftpOutput = '<fieldset title="'.Text::_('COM_PHOCAFONT_FTP_LOGIN_LABEL'). '">'
+		.'<legend>'. Text::_('COM_PHOCAFONT_FTP_LOGIN_LABEL').'</legend>'
+		.Text::_('COM_PHOCAFONT_FTP_LOGIN_DESC')
 		.'<table class="adminform nospace">'
 		.'<tr>'
-		.'<td width="120"><label for="username">'. JText::_('JGLOBAL_USERNAME').':</label></td>'
+		.'<td width="120"><label for="username">'. Text::_('JGLOBAL_USERNAME').':</label></td>'
 		.'<td><input type="text" id="username" name="username" class="input_box" size="70" value="" /></td>'
 		.'</tr>'
 		.'<tr>'
-		.'<td width="120"><label for="password">'. JText::_('JGLOBAL_PASSWORD').':</label></td>'
+		.'<td width="120"><label for="password">'. Text::_('JGLOBAL_PASSWORD').':</label></td>'
 		.'<td><input type="password" id="password" name="password" class="input_box" size="70" value="" /></td>'
 		.'</tr></table></fieldset>';
 		return $ftpOutput;

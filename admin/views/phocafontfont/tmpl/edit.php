@@ -8,40 +8,50 @@
  * @copyright Copyright (C) Jan Pavelka www.phoca.cz
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
-
 defined('_JEXEC') or die;
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
-JHtml::_('formbehavior.chosen', 'select');
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 
-$class		= $this->t['n'] . 'RenderAdminView';
-$r 			=  new $class();
 
-?>
-<script type="text/javascript">
-Joomla.submitbutton = function(task){
-	if (task == '<?php echo $this->t['task'] ?>.cancel' || document.formvalidator.isValid(document.getElementById('adminForm'))) {
-		Joomla.submitform(task, document.getElementById('adminForm'));
+$r 			= $this->r;
+
+
+JFactory::getDocument()->addScriptDeclaration(
+
+'Joomla.submitbutton = function(task) { 
+	if (task != "'. $this->t['task'].'.cancel" || document.formvalidator.isValid(document.getElementById(\'adminForm\'))) {
+		Joomla.submitform(task, document.getElementById("adminForm"));
+	} else {
+
+	    alert(\''.Text::_('JGLOBAL_VALIDATION_FORM_FAILED', true).'\');
 	}
-	else {
-		alert('<?php echo JText::_('JGLOBAL_VALIDATION_FORM_FAILED', true);?>');
-	}
-}
-</script><?php
+}'
+
+);
+
+echo $r->startHeader();
 echo $r->startForm($this->t['o'], $this->t['task'], $this->item->id, 'adminForm', 'adminForm');
 // First Column
-echo '<div class="span10 form-horizontal">';
+//echo '<div class="span10 form-horizontal">';
+echo '<div>';
 $tabs = array (
-'general' 		=> JText::_($this->t['l'].'_GENERAL_OPTIONS'),
-'publishing' 	=> JText::_($this->t['l'].'_PUBLISHING_OPTIONS')
+'general' 		=> Text::_($this->t['l'].'_GENERAL_OPTIONS'),
+'publishing' 	=> Text::_($this->t['l'].'_PUBLISHING_OPTIONS')
 );
 echo $r->navigation($tabs);
 
-echo '<div class="tab-content">'. "\n";
+//echo '<div class="tab-content">'. "\n";
 
-echo '<div class="tab-pane active" id="general">'."\n";
-$formArray = array ('title', 'alternative', 'format');
+//echo '<div class="tab-pane active" id="general">'."\n";
+
+$formArray = array ('title');
+echo $r->groupHeader($this->form, $formArray);
+
+echo $r->startTabs();
+
+echo $r->startTab('general', $tabs['general'], 'active');
+
+$formArray = array ('alternative', 'format');
 echo $r->group($this->form, $formArray);
 
 if ($this->item->format == 'externalfonttype' || $this->item->id == 0) {
@@ -51,9 +61,9 @@ if ($this->item->format == 'externalfonttype' || $this->item->id == 0) {
 
 $formArray = array('ordering' );
 echo $r->group($this->form, $formArray);
-echo '</div>'. "\n";
+echo $r->endTab();
 
-echo '<div class="tab-pane" id="publishing">'."\n";
+echo $r->startTab('publishing', $tabs['publishing']);
 foreach($this->form->getFieldset('publish') as $field) {
 	echo '<div class="control-group">';
 	if (!$field->hidden) {
@@ -63,16 +73,14 @@ foreach($this->form->getFieldset('publish') as $field) {
 	echo $field->input;
 	echo '</div></div>';
 }
+echo $r->endTab();
+
+
+
+
+echo $r->endTabs();
 echo '</div>';
-
-
-
-
-echo '</div>';//end tab content
-echo '</div>';//end span10
-// Second Column
-echo '<div class="span2"></div>';//end span2
-echo $r->formInputs();
+echo $r->formInputs($this->t['task']);
 echo $r->endForm();
 ?>
 

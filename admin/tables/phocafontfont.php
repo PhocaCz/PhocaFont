@@ -9,7 +9,10 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */
 defined( '_JEXEC' ) or die( 'Restricted access' );
-class TablePhocaFontFont extends JTable
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Factory;
+class TablePhocaFontFont extends Table
 {
 
 	function __construct( &$db ) {
@@ -19,7 +22,7 @@ class TablePhocaFontFont extends JTable
 	function check()
 	{
 		if (empty($this->title)) {
-			$this->setError(JText::_('COM_PHOCAFONT_WARNING_FONT_MUST_HAVE_TITLE'));
+			$this->setError(Text::_('COM_PHOCAFONT_WARNING_FONT_MUST_HAVE_TITLE'));
 			return false;
 		}
 		
@@ -32,7 +35,7 @@ class TablePhocaFontFont extends JTable
 		}
 		$this->alias = JApplication::stringURLSafe($this->alias);
 		if (trim(str_replace('-','',$this->alias)) == '') {
-			$this->alias = JFactory::getDate()->format("%Y-%m-%d-%H-%M-%S");
+			$this->alias = Factory::getDate()->format("%Y-%m-%d-%H-%M-%S");
 		}*/
 		
 		return true;

@@ -9,6 +9,16 @@
  * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License version 2 or later;
  */
 defined( '_JEXEC' ) or die();
+use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\Path;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Log\Log;
 jimport( 'joomla.application.component.modellist' );
 jimport( 'joomla.installer.installer' );
 jimport( 'joomla.installer.helper' );
@@ -16,7 +26,7 @@ jimport( 'joomla.filesystem.folder' );
 jimport( 'joomla.filesystem.file' );
 
 
-class PhocaFontCpModelPhocaFontFonts extends JModelList
+class PhocaFontCpModelPhocaFontFonts extends ListModel
 {
 	protected	$option 		= 'com_phocafont';
 	public 		$context		= 'com_phocafont.phocafontfonts';
@@ -43,14 +53,14 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 	protected function populateState($ordering = NULL, $direction = NULL)
 	{
 		// Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		$app = Factory::getApplication('administrator');
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$state = $app->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-		$this->setState('filter.state', $state);
+		$state = $app->getUserStateFromRequest($this->context.'.filter.published', 'filter_published', '', 'string');
+		$this->setState('filter.published', $state);
 
 		//$fontId = $app->getUserStateFromRequest($this->context.'.filter.font_id', 'filter_font_id', null);
 		//$this->setState('filter.font_id', $fontId);
@@ -59,7 +69,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		$this->setState('filter.language', $language);
 
 		// Load the parameters.
-		$params = JComponentHelper::getParams('com_phocafont');
+		$params = ComponentHelper::getParams('com_phocafont');
 		$this->setState('params', $params);
 
 		// List state information.
@@ -70,7 +80,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('filter.search');
-		$id	.= ':'.$this->getState('filter.state');
+		$id	.= ':'.$this->getState('filter.published');
 		$id	.= ':'.$this->getState('filter.font_id');
 
 		return parent::getStoreId($id);
@@ -115,7 +125,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		}
 */
 		// Filter by published state.
-		$published = $this->getState('filter.state');
+		$published = $this->getState('filter.published');
 		if (is_numeric($published)) {
 			$query->where('a.published = '.(int) $published);
 		}
@@ -160,38 +170,47 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 	// XML
 	// - - - - - - - - - - - - - - - -
 	function _isManifest($file) {
-		$xml	= simplexml_load_file($file);
-		if (!$xml) {
-			unset ($xml);
+
+		try {
+			if (File::exists($file)) {
+				$xml = simplexml_load_file($file);
+				if (!$xml) {
+					unset ($xml);
+					return null;
+				}
+
+				if (!is_object($xml) || ($xml->getName() != 'install')) {
+
+					unset ($xml);
+					return null;
+				}
+
+
+				return $xml;
+			} else {
+				return null;
+			}
+		} catch (Exception $e){
 			return null;
 		}
-
-		if (!is_object($xml) || ($xml->getName() != 'install' )) {
-
-			unset ($xml);
-			return null;
-		}
-
-
-		return $xml;
 	}
 
 	function _getPathDst() {
 		if (empty($this->_pathd)) {
-			$this->_pathd = JPATH_COMPONENT_SITE.'/fonts';
+			$this->_pathd = JPATH_SITE.'/media/com_phocafont/fonts';
 		}
 		return $this->_pathd;
 	}
 
 	/* DELETE */
-	function delete($cid = array(), &$errorMsg) {
+	function delete($cid = array(), &$errorMsg = '') {
 
-		$app	= JFactory::getApplication();
-		$db 	= JFactory::getDBO();
+		$app	= Factory::getApplication();
+		$db 	= Factory::getDBO();
 		$errorMsg 	= '';
 
 		if (count( $cid )) {
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
 
 			$query = 'SELECT a.id, a.title, a.format, a.xmlfile, a.defaultfont'
@@ -211,12 +230,12 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 				} else {
 					/*if (isset($value->defaultfont) && $value->defaultfont == 1) {
-						$errorMsg .= JText::_('COM_PHOCAFONT_DEFAULT_FONT_CANNOT_BE_DELETED');
+						$errorMsg .= Text::_('COM_PHOCAFONT_DEFAULT_FONT_CANNOT_BE_DELETED');
 						return false;
 					}*/
 
 					if (!isset($value->xmlfile) || (isset($value->xmlfile) && $value->xmlfile == '')) {
-						$errorMsg .= JText::_('COM_PHOCAFONT_ERROR_NO_XML_INFO_FOUND');
+						$errorMsg .= Text::_('COM_PHOCAFONT_ERROR_NO_XML_INFO_FOUND');
 						return false;
 					}
 
@@ -248,10 +267,10 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		}
 
 		foreach ($deleteFiles as $keyF => $valueF) {
-			if (JFile::exists($valueF)) {
-				if(JFile::delete($valueF)) {
+			if (File::exists($valueF)) {
+				if(File::delete($valueF)) {
 				} else {
-					$errorMsg .= $valueF . ': '.JText::_('COM_PHOCAFONT_ERROR_FILE_CANNOT_BE_DELETED') . '<br />';
+					$errorMsg .= $valueF . ': '.Text::_('COM_PHOCAFONT_ERROR_FILE_CANNOT_BE_DELETED') . '<br />';
 				}
 			}
 		}
@@ -261,12 +280,12 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		}
 
 		/* Delete database*/
-		$db =& JFactory::getDBO();
+		$db = Factory::getDBO();
 
 		$result = false;
 
 		if (count( $cid )) {
-			\Joomla\Utilities\ArrayHelper::toInteger($cid);
+			ArrayHelper::toInteger($cid);
 			$cids = implode( ',', $cid );
 
 			$query = 'DELETE FROM #__phocafont_font'
@@ -283,21 +302,21 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 	/* INSTALL*/
 	function install(&$errorMsg) {
-		$app		= JFactory::getApplication();
+		$app		= Factory::getApplication();
 		$package 	= $this->_getPackageFromUpload();
 
 		if (!$package) {
 
-			$app->enqueueMessage(JText::_('COM_PHOCAFONT_ERROR_UNABLE_TO_FIND_INSTALL_PACKAGE'), 'error');
+			$app->enqueueMessage(Text::_('COM_PHOCAFONT_ERROR_UNABLE_TO_FIND_INSTALL_PACKAGE'), 'error');
 			$this->deleteTempFiles();
 			return false;
 		}
 
-		if ($package['dir'] && JFolder::exists($package['dir'])) {
+		if ($package['dir'] && Folder::exists($package['dir'])) {
 			$this->setPath('source', $package['dir']);
 		} else {
 
-			$app->enqueueMessage(JText::_('COM_PHOCAFONT_ERROR_INSTALL_PATH_NOT_EXISTS'), 'error');
+			$app->enqueueMessage(Text::_('COM_PHOCAFONT_ERROR_INSTALL_PATH_NOT_EXISTS'), 'error');
 			$this->deleteTempFiles();
 			return false;
 		}
@@ -305,7 +324,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		// We need to find the installation manifest file
 		if (!$this->_findManifest()) {
 
-			$app->enqueueMessage(JText::_('COM_PHOCAFONT_ERROR_UNABLE_TO_FIND_INSTALL_PACKAGE_INFO'), 'error');
+			$app->enqueueMessage(Text::_('COM_PHOCAFONT_ERROR_UNABLE_TO_FIND_INSTALL_PACKAGE_INFO'), 'error');
 			$this->deleteTempFiles();
 			return false;
 		}
@@ -316,7 +335,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 			if (is_a($child, 'SimpleXMLElement') && $child->getName() == 'files') {
 				if ($this->parseFiles($child) === false) {
 
-					$app->enqueueMessage(JText::_('COM_PHOCAFONT_ERROR_UNABLE_TO_FIND_INSTALL_PACKAGE_INFO'), 'error');
+					$app->enqueueMessage(Text::_('COM_PHOCAFONT_ERROR_UNABLE_TO_FIND_INSTALL_PACKAGE_INFO'), 'error');
 					$this->deleteTempFiles();
 					return false;
 				}
@@ -353,11 +372,11 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 			if ($rowId > 0) {
 				return true;
 			} else {
-				$errorMsg = JText::_('COM_PHOCAFONT_ERROR_DATA_COULD_NOT_BE_SAVED_DB');
+				$errorMsg = Text::_('COM_PHOCAFONT_ERROR_DATA_COULD_NOT_BE_SAVED_DB');
 				return false;
 			}
 		} else {
-			$errorMsg = JText::_('COM_PHOCAFONT_ERROR_FONT_TYPE_NOT_FOUND');
+			$errorMsg = Text::_('COM_PHOCAFONT_ERROR_FONT_TYPE_NOT_FOUND');
 			return false;
 		}
 
@@ -367,37 +386,37 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 	protected function _getPackageFromUpload() {
 		// Get the uploaded file information
 		//$userfile = JFactory::getApplication()->input->get('Filedata', null, 'files', 'array' );
-		$userfile = JFactory::getApplication()->input->files->get( 'Filedata', null, 'raw');
+		$userfile = Factory::getApplication()->input->files->get( 'Filedata', null, 'raw');
 
 		// Make sure that file uploads are enabled in php
 		if (!(bool) ini_get('file_uploads')) {
-			throw new Exception(JText::_('COM_PHOCAFONT_WARNING_INSTALL_FILE'), 500);
+			throw new Exception(Text::_('COM_PHOCAFONT_WARNING_INSTALL_FILE'), 500);
 			return false;
 		}
 		// Make sure that zlib is loaded so that the package can be unpacked
 		if (!extension_loaded('zlib')) {
-			throw new Exception(JText::_('COM_PHOCAFONT_WARNING_INSTALL_ZLIB'), 500);
+			throw new Exception(Text::_('COM_PHOCAFONT_WARNING_INSTALL_ZLIB'), 500);
 			return false;
 		}
 		// If there is no uploaded file, we have a problem...
 		if (!is_array($userfile) ) {
-			throw new Exception(JText::_('COM_PHOCAFONT_ERROR_NO_FILE_SELECTED'), 500);
+			throw new Exception(Text::_('COM_PHOCAFONT_ERROR_NO_FILE_SELECTED'), 500);
 			return false;
 		}
 		// Check if there was a problem uploading the file.
 		if ( $userfile['error'] || $userfile['size'] < 1 ) {
-			throw new Exception(JText::_('COM_PHOCAFONT_ERROR_UPLOAD_FILE'), 500);
+			throw new Exception(Text::_('COM_PHOCAFONT_ERROR_UPLOAD_FILE'), 500);
 			return false;
 		}
 
 		// Build the appropriate paths
-		$config 	= JFactory::getConfig();
+		$config 	= Factory::getConfig();
 		$tmp_dest 	= $config->get('tmp_path').'/'.$userfile['name'];
 		$tmp_src	= $userfile['tmp_name'];
 
 		// Move uploaded file
 		jimport('joomla.filesystem.file');
-		$uploaded = JFile::upload($tmp_src, $tmp_dest, false, true);
+		$uploaded = File::upload($tmp_src, $tmp_dest, false, true);
 
 		// Unpack the downloaded package file
 		$package = self::unpack($tmp_dest);
@@ -419,7 +438,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 	protected function _findManifest() {
 		// Get an array of all the xml files from the installation directory
-		$xmlfiles = JFolder::files($this->getPath('source'), '.xml$', 1, true);
+		$xmlfiles = Folder::files($this->getPath('source'), '.xml$', 1, true);
 
 		// If at least one xml file exists
 		if (count($xmlfiles) > 0) {
@@ -433,7 +452,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 					if ((string)$attr['type'] != 'phocafontfonts') {
 
-						throw new Exception(JText::_('COM_PHOCAFONT_ERROR_NOT_PHOCA_FONT_FILE'), 500);
+						throw new Exception(Text::_('COM_PHOCAFONT_ERROR_NOT_PHOCA_FONT_FILE'), 500);
 						return false;
 					}
 
@@ -450,12 +469,12 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 			// None of the xml files found were valid install files
 
-			throw new Exception(JText::_('COM_PHOCAFONT_ERROR_NOT_FIND_XML_SETUP_FILE'), 500);
+			throw new Exception(Text::_('COM_PHOCAFONT_ERROR_NOT_FIND_XML_SETUP_FILE'), 500);
 			return false;
 		} else {
 			// No xml files were found in the install folder
 
-			throw new Exception(JText::_('COM_PHOCAFONT_ERROR_NOT_FIND_XML_SETUP_FILE'), 500);
+			throw new Exception(Text::_('COM_PHOCAFONT_ERROR_NOT_FIND_XML_SETUP_FILE'), 500);
 			return false;
 		}
 	}
@@ -478,7 +497,6 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		// Process each file in the $files array (children of $tagName).
 
 		/*foreach ($files as $file) {
-			print_r($file);exit;
 			$path['src']	= $source.'/'.$file->data();
 			$path['dest']	= $destination.'/'.$file->data();
 
@@ -504,10 +522,10 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 			$folder = $this->_getPathDst();
 			if (isset($folder)) {
-				if (!JFolder::exists($folder)) {
-					if (!(JFolder::create($folder))) {
+				if (!Folder::exists($folder)) {
+					if (!(Folder::create($folder))) {
 
-						throw new Exception(JText::_('COM_PHOCAFONT_ERROR_CREATE_FOLDER_FONTS'), 500);
+						throw new Exception(Text::_('COM_PHOCAFONT_ERROR_CREATE_FOLDER_FONTS'), 500);
 						return false;
 					}
 				}
@@ -516,24 +534,24 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 			foreach ($files as $file)
 			{
 				// Get the source and destination paths
-				$filesource	= JPath::clean($file['src']);
-				$filedest	= JPath::clean($file['dest']);
+				$filesource	= Path::clean($file['src']);
+				$filedest	= Path::clean($file['dest']);
 
 				if (!file_exists($filesource)) {
 
-					throw new Exception(JText::_('COM_PHOCAFONT_FILE_NOT_EXISTS') .' ('. $filesource . ')', 500);
+					throw new Exception(Text::_('COM_PHOCAFONT_FILE_NOT_EXISTS') .' ('. $filesource . ')', 500);
 					return false;
 				} else {
-					 if (!(JFile::copy($filesource, $filedest))) {
+					 if (!(File::copy($filesource, $filedest))) {
 
-						throw new Exception(JText::_('COM_PHOCAFONT_ERROR_COPY_FILE').' ('. $filesource .'<br />'. $filedest. ')', 500);
+						throw new Exception(Text::_('COM_PHOCAFONT_ERROR_COPY_FILE').' ('. $filesource .'<br />'. $filedest. ')', 500);
 						return false;
 					}
 				}
 			}
 		} else {
 
-			throw new Exception(JText::_('COM_PHOCAFONT_ERROR_INSTALLATION'), 500);
+			throw new Exception(Text::_('COM_PHOCAFONT_ERROR_INSTALLATION'), 500);
 			return false;
 		}
 
@@ -544,17 +562,17 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		// Delete Temp files
 		$path = $this->getPath('source');
 		if (is_dir($path)) {
-			$val = JFolder::delete($path);
+			$val = Folder::delete($path);
 		} else if (is_file($path)) {
-			$val = JFile::delete($path);
+			$val = File::delete($path);
 		}
 		$packageFile = $this->getPath('packagefile');
 		if (is_file($packageFile)) {
-			$val = JFile::delete($packageFile);
+			$val = File::delete($packageFile);
 		}
 		$extractDir = $this->getPath('extractdir');
 		if (is_dir($extractDir)) {
-			$val = JFolder::delete($extractDir);
+			$val = Folder::delete($extractDir);
 		}
 	}
 
@@ -567,7 +585,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 
 
-		$db = JFactory::getDBO();
+		$db = Factory::getDBO();
 		// Get id if current font is installed
 		$query = 'SELECT a.id'
 				.' FROM #__phocafont_font AS a '
@@ -619,7 +637,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 
 	function isDefaultPublished($id) {
 
-		$table 	= JTable::getInstance('PhocaFontFont', 'Table');
+		$table 	= Table::getInstance('PhocaFontFont', 'Table');
 		$table->load($id);
 		if(!$table->get('published')) {
 			return false;
@@ -697,8 +715,8 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		$tmpdir = uniqid('install_');
 
 		// Clean the paths to use for archive extraction
-		$extractdir = JPath::clean(dirname($p_filename) . '/' . $tmpdir);
-		$archivename = JPath::clean($archivename);
+		$extractdir = Path::clean(dirname($p_filename) . '/' . $tmpdir);
+		$archivename = Path::clean($archivename);
 
 		// Do the unpacking of the archive
 		try
@@ -725,13 +743,13 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 		 * List all the items in the installation directory.  If there is only one, and
 		 * it is a folder, then we will set that folder to be the installation folder.
 		 */
-		$dirList = array_merge(JFolder::files($extractdir, ''), JFolder::folders($extractdir, ''));
+		$dirList = array_merge(Folder::files($extractdir, ''), Folder::folders($extractdir, ''));
 
 		if (count($dirList) == 1)
 		{
-			if (JFolder::exists($extractdir . '/' . $dirList[0]))
+			if (Folder::exists($extractdir . '/' . $dirList[0]))
 			{
-				$extractdir = JPath::clean($extractdir . '/' . $dirList[0]);
+				$extractdir = Path::clean($extractdir . '/' . $dirList[0]);
 			}
 		}
 
@@ -759,11 +777,11 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 	public static function detectType($p_dir)
 	{
 		// Search the install dir for an XML file
-		$files = JFolder::files($p_dir, '\.xml$', 1, true);
+		$files = Folder::files($p_dir, '\.xml$', 1, true);
 
 		if (!count($files))
 		{
-			JLog::add(JText::_('JLIB_INSTALLER_ERROR_NOTFINDXMLSETUPFILE'), JLog::WARNING, 'error');
+			Log::add(Text::_('JLIB_INSTALLER_ERROR_NOTFINDXMLSETUPFILE'), Log::WARNING, 'error');
 
 			return false;
 		}
@@ -790,7 +808,7 @@ class PhocaFontCpModelPhocaFontFonts extends JModelList
 			return $type;
 		}
 
-		JLog::add(JText::_('JLIB_INSTALLER_ERROR_NOTFINDJOOMLAXMLSETUPFILE'), JLog::WARNING, 'error');
+		Log::add(Text::_('JLIB_INSTALLER_ERROR_NOTFINDJOOMLAXMLSETUPFILE'), Log::WARNING, 'error');
 
 		// Free up memory.
 		unset($xml);

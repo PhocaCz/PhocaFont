@@ -1,0 +1,33 @@
+<install type="phocafontfonts" version="2.5" client="both" method="upgrade">
+    <name>HoboDOT-Regular</name>
+	<tag>HoboDOT-Regular</tag>
+    <creationDate>17/01/2012</creationDate>
+    <author>Author</author>
+    <authorEmail></authorEmail>
+    <authorUrl>Author URL</authorUrl>
+    <copyright>(C) Copyright</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	
+	<authorFont>Ryoichi Tsunekawa, see license.txt in this package</authorFont>
+    <copyrightFont>Ryoichi Tsunekawa, see license.txt file in this package</copyrightFont>
+    <licenseFont>See license.txt file in this package</licenseFont>
+	
+    <description>HoboDOT-Regular Font for Phoca Font component</description>
+
+    <files>
+          <filename>HoboDOT-Regular.otf</filename>
+		  <filename>index.html</filename>
+    </files>
+	<types>
+		<regular>HoboDOT-Regular.otf</regular>
+		<bold></bold>
+		<italic></italic>
+		<bolditalic></bolditalic>
+		<condensed></condensed>
+		<condensedbold></condensedbold>
+		<condenseditalic></condenseditalic>
+		<condensedbolditalic></condensedbolditalic>
+		<alternative>serif, arial, helvetica</alternative>
+		<format>opentype</format>
+	</types>
+</install> 

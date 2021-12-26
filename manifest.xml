@@ -1,7 +1,7 @@
 <updates>
 	<update>
 		<name><![CDATA[ Phoca Font ]]></name>
-		<description><![CDATA[ Phoca Font is Joomla! CMS component. It adds support for using downloadable fonts in your Joomla! site. You can upload and select your own .ttf or .otf font file. Font included in this font file will be rendered on your site (with help of @font-face rule). External fonts listed e.g. in Google Fonts directory can be used too. With help of this component you can include fonts from Google Fonts directory. Variant or Subset attributes are included. ]]></description>
+		<description><![CDATA[ Phoca Font is Joomla! CMS component. It adds support for using internal and external fonts in your Joomla! site. Phoca Font supports variable fonts. Variable font is a specification that enables many different variations of a typeface to be incorporated into a single file. External fonts are fonts listed in Google Fonts directory and such fonts can be displayed on your website. ]]></description>
 		<element>com_phocafont</element>
 		<type>component</type>
 		<version>3.0.4</version>
@@ -15,7 +15,26 @@
 		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
 		<maintainerurl>https://www.phoca.cz/</maintainerurl>
 		<section>Updates</section>
-		<targetplatform name="joomla" version="3.9"/>
-		<client>1</client>
+		<targetplatform name="joomla" version="3.([89]|10)"/>
+		<client>administrator</client>
+	</update>
+	<update>
+		<name><![CDATA[ Phoca Font ]]></name>
+		<description><![CDATA[ Phoca Font is Joomla! CMS component. It adds support for using internal and external fonts in your Joomla! site. Phoca Font supports variable fonts. Variable font is a specification that enables many different variations of a typeface to be incorporated into a single file. External fonts are fonts listed in Google Fonts directory and such fonts can be displayed on your website. ]]></description>
+		<element>com_phocafont</element>
+		<type>component</type>
+		<version>4.0.0Beta</version>
+		<infourl title="Phoca Font 4.0.0Beta">http://www.phoca.cz/version/index.php?phocafont=4.0.0Beta</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/PhocaCz/PhocaFont/releases/download/4.0.0Beta/com_phocafont_v4.0.0Beta.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer><![CDATA[ Phoca.cz ]]></maintainer>
+		<maintainerurl>https://www.phoca.cz/</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="4.[0]"/>
+		<client>administrator</client>
 	</update>
 </updates>

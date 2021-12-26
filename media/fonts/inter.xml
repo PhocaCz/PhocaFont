@@ -1,0 +1,29 @@
+<install type="phocafontfonts" version="4" client="both" method="upgrade">
+    <name>Inter</name>
+	<tag>inter</tag>
+    <creationDate>26/12/2021</creationDate>
+    <author>Jan Pavelka</author>
+    <authorEmail></authorEmail>
+    <authorUrl>http://www.phoca.cz</authorUrl>
+    <copyright>(C) 2008 Jan Pavelka</copyright>
+    <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	
+	<authorFont>see inter_AUTHORS.txt file in this package</authorFont>
+    <copyrightFont>see inter_AUTHORS.txt file in this package</copyrightFont>
+    <licenseFont>see inter_LICENSE.txt file in this package</licenseFont>
+	
+    <description>Inter Font for Phoca Font component</description>
+
+    <files>
+          <filename>inter_AUTHORS.txt</filename>
+          <filename>inter_LICENSE.txt</filename>
+		  <filename>Inter.woff2</filename>
+		  <filename>index.html</filename>
+    </files>
+	
+	<types>
+        <regular>Inter.woff2</regular>
+		<alternative>arial, helvetica, serif</alternative>
+		<format>woff2variable</format>
+	</types>
+</install> 
